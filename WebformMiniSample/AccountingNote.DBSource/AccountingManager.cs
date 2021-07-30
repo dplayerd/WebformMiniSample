@@ -66,7 +66,7 @@ namespace AccountingNote.DBSource
             list.Add(new SqlParameter("@userID", userID));
 
             try
-            { 
+            {
                 return DBHelper.ReadDataRow(connStr, dbCommand, list);
             }
             catch (Exception ex)
@@ -214,24 +214,21 @@ namespace AccountingNote.DBSource
                 $@" DELETE [Accounting]
                     WHERE ID = @id ";
 
-            // connect db & execute
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                using (SqlCommand comm = new SqlCommand(dbCommand, conn))
-                {
-                    comm.Parameters.AddWithValue("@id", ID);
 
-                    try
-                    {
-                        conn.Open();
-                        comm.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLog(ex);
-                    }
-                }
+            List<SqlParameter> paramList = new List<SqlParameter>();
+            paramList.Add(new SqlParameter("@id", ID));
+
+
+            try
+            {
+                DBHelper.ModifyData(connStr, dbCommand, paramList);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
             }
         }
+
+
     }
 }
