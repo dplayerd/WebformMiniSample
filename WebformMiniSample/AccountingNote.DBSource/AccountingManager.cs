@@ -76,7 +76,6 @@ namespace AccountingNote.DBSource
             }
         }
 
-
         /// <summary> 建立流水帳 </summary>
         /// <param name="userID"></param>
         /// <param name="caption"></param>
@@ -93,6 +92,14 @@ namespace AccountingNote.DBSource
                 throw new ArgumentException("ActType must be 0 or 1.");
             // <<<<< check input >>>>>
 
+            string bodyColumnSQL = "";
+            string bodyValueSQL = "";
+            if (!string.IsNullOrWhiteSpace(body))
+            {
+                bodyColumnSQL = ", Body";
+                bodyValueSQL = ", @Body";
+            }
+
             string connStr = DBHelper.GetConnectionString();
             string dbCommand =
                 $@" INSERT INTO [dbo].[Accounting]
@@ -102,7 +109,7 @@ namespace AccountingNote.DBSource
                         ,Amount
                         ,ActType
                         ,CreateDate
-                        ,Body
+                        {bodyColumnSQL}
                     )
                     VALUES
                     (
@@ -111,7 +118,7 @@ namespace AccountingNote.DBSource
                         ,@amount
                         ,@actType
                         ,@createDate
-                        ,@body
+                        {bodyValueSQL}
                     ) ";
 
 
@@ -125,7 +132,9 @@ namespace AccountingNote.DBSource
                     comm.Parameters.AddWithValue("@amount", amount);
                     comm.Parameters.AddWithValue("@actType", actType);
                     comm.Parameters.AddWithValue("@createDate", DateTime.Now);
-                    comm.Parameters.AddWithValue("@body", body);
+
+                    if (!string.IsNullOrWhiteSpace(body))
+                        comm.Parameters.AddWithValue("@body", body);
 
                     try
                     {
