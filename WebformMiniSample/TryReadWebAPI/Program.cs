@@ -12,25 +12,42 @@ namespace TryReadWebAPI
     {
         static void Main(string[] args)
         {
-            WeatherDataReader.ReadData();
-            Console.ReadLine();
+            AClass aClass = new AClass();
+            aClass.Name = "Tim";
+            aClass.Age = 28;
 
-            //WebClient client = new WebClient();
-            //byte[] sourceByte = client.DownloadData("https://apiservice.mol.gov.tw/OdService/rest/datastore/A17010000J-000135-MOZ");
-            //string jsonText = Encoding.UTF8.GetString(sourceByte);
 
-            //Rootobject obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Rootobject>(jsonText);
+            // JSON 序列化： 把記憶體中的物件轉為文字
+            string jsonText = 
+                Newtonsoft.Json.JsonConvert.SerializeObject(aClass);
+            /* {
+                  "Name": "Tim",
+                  "Age": 28
+             }
+            */
 
-            //foreach(var item in obj.result.records)
-            //{
-            //    Console.WriteLine(item.年度);
-            //}
+            // JSON 反序列化： 把文字轉為記憶體中的物件
+            AClass obj = 
+                Newtonsoft.Json.JsonConvert.DeserializeObject<AClass>(jsonText);
+
+            obj.Name = "Time";
+            obj.Age = 28;
 
 
             ////Console.WriteLine(jsonText);
             //Console.ReadLine();
         }
 
+        public static void WriteName(AClass aClass)
+        {
+            Console.WriteLine(aClass.Name);
+        }
 
+
+        public class AClass
+        {
+            public string Name { get; set; }
+            public int Age { get; set; }
+        }
     }
 }

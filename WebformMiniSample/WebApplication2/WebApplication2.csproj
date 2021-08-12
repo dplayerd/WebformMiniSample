@@ -75,6 +75,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\jQuery-min-3.6.0.js" />
     <Content Include="Scripts\WebForm1.js" />
+    <Content Include="TryAjax.aspx" />
     <Content Include="TryJquery.aspx" />
     <Content Include="TryJquery2.aspx" />
     <Content Include="WeatherData.aspx" />
@@ -94,6 +95,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TryAjax.aspx.cs">
+      <DependentUpon>TryAjax.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TryAjax.aspx.designer.cs">
+      <DependentUpon>TryAjax.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TryJquery.aspx.cs">
       <DependentUpon>TryJquery.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

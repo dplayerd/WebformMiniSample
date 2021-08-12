@@ -22,6 +22,8 @@ namespace WebApplication2
                 context.Response.ContentType = "application/json";
 
                 WeatherDataModel model = WeatherDataReader.ReadData();
+                model.Name += acc;
+
                 string jsonText = Newtonsoft.Json.JsonConvert.SerializeObject(model);
                 context.Response.Write(jsonText);
             }
