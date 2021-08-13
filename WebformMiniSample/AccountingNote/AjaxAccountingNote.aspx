@@ -50,12 +50,17 @@
             });
 
 
-            $("#btnRead").click(function () {
+            $(document).on("click", ".btnReadData", function () {
+                var td = $(this).closest("td");
+                var hf = td.find("input.hfRowID");
+
+                var rowID = hf.val();
+
                 $.ajax({
                     url: "http://localhost:17133/Handlers/AccountingNoteHandler.ashx?ActionName=query",
                     type: "POST",
                     data: {
-                        "ID": 1015,
+                        "ID": rowID,
                     },
                     success: function (result) {
                         $("#hfID").val(result["ID"]);
@@ -63,39 +68,101 @@
                         $("#txtAmount").val(result["Amount"]);
                         $("#txtCaption").val(result["Caption"]);
                         $("#txtDesc").val(result["Body"]);
+
+                        $("#divEditor").show(300);
                     }
                 });
+            });
+
+            $("#btnAdd").click(function () {
+                $("#hfID").val('');
+                $("#ddlActType").val('');
+                $("#txtAmount").val('');
+                $("#txtCaption").val('');
+                $("#txtDesc").val('');
+
+                $("#divEditor").show(300);
+            });
+
+            $("#btnCancle").click(function () {
+                $("#hfID").val('');
+                $("#ddlActType").val('');
+                $("#txtAmount").val('');
+                $("#txtCaption").val('');
+                $("#txtDesc").val('');
+
+                $("#divEditor").hide(300);
+            });
+
+            $("#divEditor").hide();
+
+
+            $.ajax({
+                url: "http://localhost:17133/Handlers/AccountingNoteHandler.ashx?ActionName=list",
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    var table = '<table border="1">';
+                    table += '<tr> <th>Caption</th> <th>Amount</th> <th>ActType</th> <th>CreateDate</th> <th>Act</th> </tr>';
+
+                    for (var i = 0; i < result.length; i++) {
+                        var obj = result[i];
+                        var htmlText =
+                            `<tr> 
+                                <td>${obj.Caption}</td>
+                                <td>${obj.Amount}</td>
+                                <td>${obj.ActType}</td>
+                                <td>${obj.CreateDate}</td>
+                                <td>
+                                    <input type="hidden" class="hfRowID" value="${obj.ID}" />
+
+                                    <button type="button" class="btnReadData">
+                                        <img src="Images/search.png" width="20" height="20" />
+                                    </button>
+                                </td>
+                            </tr>`;
+                        table += htmlText;
+                    }
+
+                    table += "</table>";
+                    $("#divAccountingList").append(table);
+                }
             });
         });
     </script>
 </head>
 <body>
     <form id="form1" runat="server">
-        <input type="hidden" id="hfID" />
-        <button type="button" id="btnRead">Read Data</button>
-        <table>
-            <tr>
-                <td>
-                    <!--這裡放主要內容-->
-                    Type:
+        <div id="divEditor">
+            <input type="hidden" id="hfID" />
+            <table>
+                <tr>
+                    <td>
+                        <!--這裡放主要內容-->
+                        Type:
                         <select id="ddlActType">
                             <option value="0">支出</option>
                             <option value="1">收入</option>
                         </select>
-                    <br />
-                    Amount:
+                        <br />
+                        Amount:
                         <input type="number" id="txtAmount" />
-                    <br />
-                    Caption: 
+                        <br />
+                        Caption: 
                         <input type="text" id="txtCaption" />
-                    <br />
-                    Desc:
+                        <br />
+                        Desc:
                         <textarea id="txtDesc" rows="5" cols="60"></textarea>
-                    <br />
-                    <button type="button" id="btnSave">SAVE</button>
-                </td>
-            </tr>
-        </table>
+                        <br />
+                        <button type="button" id="btnSave">SAVE</button>
+                        <button type="button" id="btnCancle">CANCLE</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <button type="button" id="btnAdd">ADD</button>
+        <div id="divAccountingList"></div>
     </form>
 </body>
 </html>

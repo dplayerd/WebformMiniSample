@@ -72,6 +72,7 @@
     <Content Include="AjaxAccountingNote.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Images\search.png" />
     <Content Include="Login.aspx" />
     <Content Include="SystemAdmin\AccountingDetail.aspx" />
     <Content Include="SystemAdmin\AccountingList.aspx" />
