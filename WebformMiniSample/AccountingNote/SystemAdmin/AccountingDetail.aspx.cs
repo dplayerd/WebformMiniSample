@@ -1,5 +1,6 @@
 ﻿using AccountingNote.Auth;
 using AccountingNote.DBSource;
+using AccountingNote.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,9 +46,9 @@ namespace AccountingNote.SystemAdmin
                     int id;
                     if (int.TryParse(idText, out id))
                     {
-                        var drAccounting = AccountingManager.GetAccounting(id, currentUser.ID);
+                        var accounting = AccountingManager.GetAccounting(id, currentUser.ID.ToGuid());
 
-                        if (drAccounting == null)
+                        if (accounting == null)
                         {
                             this.ltMsg.Text = "Data doesn't exist";
                             this.btnSave.Visible = false;
@@ -55,10 +56,10 @@ namespace AccountingNote.SystemAdmin
                         }
                         else
                         {
-                            this.ddlActType.SelectedValue = drAccounting["ActType"].ToString();
-                            this.txtAmount.Text = drAccounting["Amount"].ToString();
-                            this.txtCaption.Text = drAccounting["Caption"].ToString();
-                            this.txtDesc.Text = drAccounting["Body"].ToString();
+                            this.ddlActType.SelectedValue = accounting.ActType.ToString();
+                            this.txtAmount.Text = accounting.Amount.ToString();
+                            this.txtCaption.Text = accounting.Caption;
+                            this.txtDesc.Text = accounting.Body;
                         }
                     }
                     else

@@ -104,6 +104,33 @@ namespace AccountingNote.DBSource
         }
 
 
+        /// <summary> 查詢流水帳 </summary>
+        /// <param name="id"></param>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public static Accounting GetAccounting(int id, Guid userID)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.Accountings
+                         where item.ID == id && item.UserID == userID
+                         select item);
+
+                    var obj = query.FirstOrDefault();
+                    return obj;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+            }
+        }
+
+
         /// <summary> 建立流水帳 </summary>
         /// <param name="userID"></param>
         /// <param name="caption"></param>
