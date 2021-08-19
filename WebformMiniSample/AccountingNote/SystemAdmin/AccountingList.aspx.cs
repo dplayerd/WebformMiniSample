@@ -1,5 +1,6 @@
 ﻿using AccountingNote.Auth;
 using AccountingNote.DBSource;
+using AccountingNote.ORM.DBModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,7 +25,7 @@ namespace AccountingNote.SystemAdmin
 
             var currentUser = AuthManager.GetCurrentUser();
 
-            if (currentUser == null)                             // 如果帳號不存在，導至登入頁
+            if (currentUser == null)        // 如果帳號不存在，導至登入頁
             {
                 this.Session["UserLoginInfo"] = null;
                 Response.Redirect("/Login.aspx");
@@ -32,28 +33,15 @@ namespace AccountingNote.SystemAdmin
             }
 
             // read accounting data
-            //var dt = AccountingManager.GetAccountingList(currentUser.ID);
             var list = AccountingManager.GetAccountingList(currentUser.UserGuid);
 
-            //if (dt.Rows.Count > 0)  // check is empty data
-            //{
-            //    var dtPaged = this.GetPagedDataTable(dt);
-
-            //    this.gvAccountingList.DataSource = dtPaged;
-            //    this.gvAccountingList.DataBind();
-
-            //    this.ucPager.TotalSize = dt.Rows.Count;
-            //    this.ucPager.Bind();
-            //}
             if (list.Count > 0)  // check is empty data
             {
-                //var dtPaged = this.GetPagedDataTable(list);
+                var pagedList = this.GetPagedDataTable(list);
 
-                //this.gvAccountingList.DataSource = dtPaged;
-                this.gvAccountingList.DataSource = list;
+                this.gvAccountingList.DataSource = pagedList;
                 this.gvAccountingList.DataBind();
 
-                //this.ucPager.TotalSize = list.Rows.Count;
                 this.ucPager.TotalSize = list.Count;
                 this.ucPager.Bind();
             }
@@ -78,28 +66,10 @@ namespace AccountingNote.SystemAdmin
             return intPage;
         }
 
-        private DataTable GetPagedDataTable(DataTable dt)
+        private List<Accounting> GetPagedDataTable(List<Accounting> list)
         {
-            DataTable dtPaged = dt.Clone();
-
             int startIndex = (this.GetCurrentPage() - 1) * 10;
-            int endIndex = (this.GetCurrentPage()) * 10;
-            if (endIndex > dt.Rows.Count)
-                endIndex = dt.Rows.Count;
-
-            for (var i = startIndex; i < endIndex; i++)
-            {
-                DataRow dr = dt.Rows[i];
-                var drNew = dtPaged.NewRow();
-
-                foreach (DataColumn dc in dt.Columns)
-                {
-                    drNew[dc.ColumnName] = dr[dc];
-                }
-
-                dtPaged.Rows.Add(drNew);
-            }
-            return dtPaged;
+            return list.Skip(startIndex).Take(10).ToList();
         }
 
         protected void btnCreate_Click(object sender, EventArgs e)
@@ -113,24 +83,21 @@ namespace AccountingNote.SystemAdmin
 
             if (row.RowType == DataControlRowType.DataRow)
             {
-                //Literal ltl = row.FindControl("ltActType") as Literal;
                 Label lbl = row.FindControl("lblActType") as Label;
 
-                var dr = row.DataItem as DataRowView;
-                int actType = dr.Row.Field<int>("ActType");
+                var rowData = row.DataItem as Accounting;
+                int actType = rowData.ActType;
 
                 if (actType == 0)
                 {
-                    //ltl.Text = "支出";
                     lbl.Text = "支出";
                 }
                 else
                 {
-                    //ltl.Text = "收入";
                     lbl.Text = "收入";
                 }
 
-                if (dr.Row.Field<int>("Amount") > 1500)
+                if (rowData.Amount > 1500)
                 {
                     lbl.ForeColor = Color.Red;
                 }
