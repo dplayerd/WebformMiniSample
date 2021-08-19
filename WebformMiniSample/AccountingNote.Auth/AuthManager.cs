@@ -32,7 +32,7 @@ namespace AccountingNote.Auth
                 return null;
 
 
-            var userInfo = UserInfoManager.GetUserInfoByAccount_ORM(account);
+            var userInfo = UserInfoManager.GetUserInfoByAccount(account);
 
             if (userInfo == null)
             {
@@ -42,7 +42,7 @@ namespace AccountingNote.Auth
 
 
             UserInfoModel model = new UserInfoModel();
-            model.ID = userInfo.ID.ToString();
+            model.ID = userInfo.ID;
             model.Account = userInfo.Account;
             model.Name = userInfo.Name;
             model.Email = userInfo.Email;
@@ -73,7 +73,7 @@ namespace AccountingNote.Auth
 
 
             // read db and check
-            var userInfo = UserInfoManager.GetUserInfoByAccount_ORM(account);
+            var userInfo = UserInfoManager.GetUserInfoByAccount(account);
 
             // check null
             if (userInfo == null)

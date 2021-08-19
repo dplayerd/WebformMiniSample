@@ -47,7 +47,7 @@ namespace AccountingNote.SystemAdmin
                     int id;
                     if (int.TryParse(idText, out id))
                     {
-                        var accounting = AccountingManager.GetAccounting(id, currentUser.ID.ToGuid());
+                        var accounting = AccountingManager.GetAccounting(id, currentUser.ID);
 
                         if (accounting == null)
                         {
@@ -90,7 +90,6 @@ namespace AccountingNote.SystemAdmin
                 return;
             }
 
-            string userID = currentUser.ID;
             string actTypeText = this.ddlActType.SelectedValue;
             string amountText = this.txtAmount.Text;
             int amount = Convert.ToInt32(amountText);
@@ -99,7 +98,7 @@ namespace AccountingNote.SystemAdmin
             string idText = this.Request.QueryString["ID"];
             Accounting accounting = new Accounting()
             {
-                UserID = userID.ToGuid(),
+                UserID = currentUser.ID,
                 ActType = actType,
                 Amount = amount,
                 Caption = this.txtCaption.Text,

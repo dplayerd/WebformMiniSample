@@ -33,7 +33,7 @@ namespace AccountingNote.SystemAdmin
             }
 
             // read accounting data
-            var list = AccountingManager.GetAccountingList(currentUser.UserGuid);
+            var list = AccountingManager.GetAccountingList(currentUser.ID);
 
             if (list.Count > 0)  // check is empty data
             {

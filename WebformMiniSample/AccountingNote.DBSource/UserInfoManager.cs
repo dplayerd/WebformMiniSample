@@ -12,7 +12,7 @@ namespace AccountingNote.DBSource
 {
     public class UserInfoManager
     {
-        public static UserInfo GetUserInfoByAccount_ORM(string account)
+        public static UserInfo GetUserInfoByAccount(string account)
         {
             try
             {

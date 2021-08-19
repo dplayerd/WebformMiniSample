@@ -27,7 +27,7 @@ namespace AccountingNote.Handlers
                 return;
             }
 
-            var userInfo = UserInfoManager.GetUserInfoByAccount_ORM(account);
+            var userInfo = UserInfoManager.GetUserInfoByAccount(account);
 
             if (userInfo == null)
             {
