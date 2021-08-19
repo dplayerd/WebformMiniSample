@@ -12,18 +12,5 @@ namespace AccountingNote.Auth
         public string Account { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-
-
-        //public Guid UserGuid
-        //{
-        //    get
-        //    {
-        //        return this.ID;
-        //        //if (Guid.TryParse(this.ID, out Guid tempGuid))
-        //        //    return tempGuid;
-        //        //else
-        //        //    return Guid.Empty;
-        //    }
-        //}
     }
 }
