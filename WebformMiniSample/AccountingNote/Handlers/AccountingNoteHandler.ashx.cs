@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using AccountingNote.ORM.DBModels;
+using AccountingNote.Extensions;
 
 namespace AccountingNote.Handlers
 {
@@ -57,7 +58,15 @@ namespace AccountingNote.Handlers
                 try
                 {
                     // 建立流水帳
-                    AccountingManager.CreateAccounting(id, caption, tempAmount, tempActType, body);
+                    Accounting accounting = new Accounting()
+                    {
+                        UserID = id.ToGuid(),
+                        Caption = caption,
+                        Body = body,
+                        Amount = tempAmount,
+                        ActType = tempActType
+                    };
+                    AccountingManager.CreateAccounting(accounting);
                     context.Response.ContentType = "text/plain";
                     context.Response.Write("ok");
                 }

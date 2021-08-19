@@ -1,6 +1,7 @@
 ﻿using AccountingNote.Auth;
 using AccountingNote.DBSource;
 using AccountingNote.Extensions;
+using AccountingNote.ORM.DBModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,17 +93,24 @@ namespace AccountingNote.SystemAdmin
             string userID = currentUser.ID;
             string actTypeText = this.ddlActType.SelectedValue;
             string amountText = this.txtAmount.Text;
-            string caption = this.txtCaption.Text;
-            string body = this.txtDesc.Text;
-
             int amount = Convert.ToInt32(amountText);
             int actType = Convert.ToInt32(actTypeText);
 
             string idText = this.Request.QueryString["ID"];
+            Accounting accounting = new Accounting()
+            {
+                UserID = userID.ToGuid(),
+                ActType = actType,
+                Amount = amount,
+                Caption = this.txtCaption.Text,
+                Body = this.txtDesc.Text
+            };
+
+
             if (string.IsNullOrWhiteSpace(idText))
             {
                 // Execute 'Insert into db'
-                AccountingManager.CreateAccounting(userID, caption, amount, actType, body);
+                AccountingManager.CreateAccounting(accounting);
             }
             else
             {
@@ -110,7 +118,8 @@ namespace AccountingNote.SystemAdmin
                 if (int.TryParse(idText, out id))
                 {
                     // Execute 'update db'
-                    AccountingManager.UpdateAccounting(id, userID, caption, amount, actType, body);
+                    accounting.ID = id;
+                    AccountingManager.UpdateAccounting(accounting);
                 }
             }
 
@@ -122,7 +131,7 @@ namespace AccountingNote.SystemAdmin
             List<string> msgList = new List<string>();
 
             // Type
-            if (this.ddlActType.SelectedValue != "0" && 
+            if (this.ddlActType.SelectedValue != "0" &&
                 this.ddlActType.SelectedValue != "1")
             {
                 msgList.Add("Type must be 0 or 1.");
@@ -137,7 +146,7 @@ namespace AccountingNote.SystemAdmin
                 if (!int.TryParse(this.txtAmount.Text, out tempInt))
                     msgList.Add("Amount must be a number.");
 
-                if(tempInt < 0 || tempInt > 1000000)
+                if (tempInt < 0 || tempInt > 1000000)
                     msgList.Add("Amount must between 0 and 1,000,000 .");
             }
 
