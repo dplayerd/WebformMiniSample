@@ -46,6 +46,7 @@ namespace AccountingNote.Auth
             model.Account = userInfo.Account;
             model.Name = userInfo.Name;
             model.Email = userInfo.Email;
+            model.Phone = userInfo.Phone;
 
             return model;
         }
