@@ -42,6 +42,11 @@
                             <asp:BoundField HeaderText="建立日期" DataField="CreateDate" DataFormatString="{0:yyyy-MM-dd}" />
                             <asp:TemplateField HeaderText="Act">
                                 <ItemTemplate>
+                                    <%--<asp:Image runat="server" ID="imgCover" Width="80" Height="50"
+                                        Visible='<%# Eval("CoverImage") != null %>' 
+                                        ImageUrl='<%# "../FileDownload/Accounting/" + Eval("CoverImage") %>' />--%>
+                                    <asp:Image runat="server" ID="imgCover" Width="80" Height="50" Visible="false" />
+
                                     <a href="/SystemAdmin/AccountingDetail.aspx?ID=<%# Eval("ID") %>">Edit</a>
                                 </ItemTemplate>
                             </asp:TemplateField>
