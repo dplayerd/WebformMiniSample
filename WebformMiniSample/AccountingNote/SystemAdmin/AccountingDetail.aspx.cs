@@ -2,6 +2,7 @@
 using AccountingNote.DBSource;
 using AccountingNote.Extensions;
 using AccountingNote.Helpers;
+using AccountingNote.Models;
 using AccountingNote.ORM.DBModels;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,13 @@ namespace AccountingNote.SystemAdmin
             {
                 this.Session["UserLoginInfo"] = null;
                 Response.Redirect("/Login.aspx");
+                return;
+            }
+
+            // 檢查是否已授權
+            if (!AuthManager.IsGrant(currentUser.ID, new string[] { StaticText.RoleName_Announting_FinanceClerk }))
+            {
+                Response.Redirect("UserInfo.aspx");
                 return;
             }
 
