@@ -13,6 +13,8 @@ namespace AccountingNote.SystemAdmin
 {
     public partial class AccountingList : System.Web.UI.Page
     {
+        string RoleName = "FinanceClerk";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // check is logined
@@ -28,6 +30,13 @@ namespace AccountingNote.SystemAdmin
             {
                 this.Session["UserLoginInfo"] = null;
                 Response.Redirect("/Login.aspx");
+                return;
+            }
+
+            // 檢查是否已授權
+            if (!AuthManager.IsGrant(currentUser.ID, new string[] { RoleName }))
+            {
+                Response.Redirect("UserInfo.aspx");
                 return;
             }
 
