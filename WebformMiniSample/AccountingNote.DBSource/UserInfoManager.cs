@@ -12,6 +12,23 @@ namespace AccountingNote.DBSource
 {
     public class UserInfoManager
     {
+        public static List<UserInfo> GetUserInfoList()
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query = context.UserInfoes;
+                    var list = query.ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+            }
+        }
         public static UserInfo GetUserInfoByAccount(string account)
         {
             try
