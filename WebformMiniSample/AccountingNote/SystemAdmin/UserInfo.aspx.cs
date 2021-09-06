@@ -1,8 +1,6 @@
 ﻿using AccountingNote.Auth;
-using AccountingNote.DBSource;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -39,7 +37,7 @@ namespace AccountingNote.SystemAdmin
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             AuthManager.Logout(); //登出，並導至登入頁
-            Response.Redirect("/Login.aspx");  
+            Response.Redirect("/Login.aspx");
         }
     }
 }

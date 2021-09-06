@@ -1,6 +1,5 @@
 ﻿using AccountingNote.Auth;
 using AccountingNote.DBSource;
-using AccountingNote.Extensions;
 using AccountingNote.Helpers;
 using AccountingNote.Models;
 using AccountingNote.ORM.DBModels;

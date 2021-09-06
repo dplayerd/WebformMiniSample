@@ -10,6 +10,7 @@ namespace AccountingNote.SystemAdmin
 {
     public partial class UserAuth : System.Web.UI.Page
     {
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)                           // 可能是按鈕跳回本頁，所以要判斷 postback
