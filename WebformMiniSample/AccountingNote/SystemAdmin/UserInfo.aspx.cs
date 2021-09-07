@@ -14,19 +14,7 @@ namespace AccountingNote.SystemAdmin
         {
             if (!this.IsPostBack)                           // 可能是按鈕跳回本頁，所以要判斷 postback
             {
-                if (!AuthManager.IsLogined())                // 如果尚未登入，導至登入頁
-                {
-                    Response.Redirect("/Login.aspx");
-                    return;
-                }
-
                 var currentUser = AuthManager.GetCurrentUser();
-
-                if (currentUser == null)                             // 如果帳號不存在，導至登入頁
-                {
-                    Response.Redirect("/Login.aspx");
-                    return;
-                }
 
                 this.ltAccount.Text = currentUser.Account;
                 this.ltName.Text = currentUser.Name;

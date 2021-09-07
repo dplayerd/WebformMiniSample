@@ -17,23 +17,7 @@ namespace AccountingNote.SystemAdmin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // check is logined
-            if (!AuthManager.IsLogined())
-            {
-                Response.Redirect("/Login.aspx");
-                return;
-            }
-
-            string account = this.Session["UserLoginInfo"] as string;
             var currentUser = AuthManager.GetCurrentUser();
-
-            if (currentUser == null)                             // 如果帳號不存在，導至登入頁
-            {
-                this.Session["UserLoginInfo"] = null;
-                Response.Redirect("/Login.aspx");
-                return;
-            }
-
             if (currentUser.Level == UserLevelEnum.Regular)
             {
                 // 檢查是否已授權

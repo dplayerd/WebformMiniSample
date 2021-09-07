@@ -16,21 +16,11 @@ namespace AccountingNote.SystemAdmin
         protected void Page_Load(object sender, EventArgs e)
         {
             var currentUser = AuthManager.GetCurrentUser();
-
-            if (currentUser == null)                             // 如果帳號不存在，導至登入頁
-            {
-                this.Session["UserLoginInfo"] = null;
-                Response.Redirect("/Login.aspx");
-                return;
-            }
-
             if (currentUser.Level != UserLevelEnum.Admin)
             {
                 Response.Redirect("UserInfo.aspx");
                 return;
             }
-
-
 
             if (!this.IsPostBack)                           // 可能是按鈕跳回本頁，所以要判斷 postback
             {
