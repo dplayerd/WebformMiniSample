@@ -34,19 +34,21 @@ namespace AccountingNote.SystemAdmin
                 return;
             }
 
-            // 檢查是否已授權
-            var roles =
-                new string[]
-                {
+            if (currentUser.Level == UserLevelEnum.Regular)
+            {
+                // 檢查是否已授權
+                var roles =
+                    new string[]
+                    {
                     StaticText.RoleName_Announting_FinanceClerk,
                     StaticText.RoleName_Announting_FinanceAdmin,
-                };
-            if (!AuthManager.IsGrant(currentUser.ID, roles))
-            {
-                Response.Redirect("UserInfo.aspx");
-                return;
+                    };
+                if (!AuthManager.IsGrant(currentUser.ID, roles))
+                {
+                    Response.Redirect("UserInfo.aspx");
+                    return;
+                }
             }
-
 
             if (!this.IsPostBack)
             {
