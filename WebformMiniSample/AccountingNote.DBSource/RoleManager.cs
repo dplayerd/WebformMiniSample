@@ -142,24 +142,19 @@ namespace AccountingNote.DBSource
                              roleIDs.Contains(item.RoleID)
                          select item).ToList();
 
-                    // 如果數量不一致，回傳否
-                    if (roleIDs.Length != currentRole.Count)
-                        return false;
+                    // 一、未設定到期、或尚未到期
+                    // 二、尚未設定啟用或停用、或仍為啟用
+                    var query =
+                        from item in currentRole
+                        where
+                            ((item.EndDate == null) ||
+                             (item.EndDate.HasValue && item.EndDate.Value > DateTime.Now)) &&
+                            ((item.IsGrant == null) ||
+                             (item.IsGrant.Value))
+                        select item;
 
-                    // 如果授權的角色和需要的角色不同，回傳否
-                    if (roleIDs.Except(currentRole.Select(obj => obj.RoleID)).Any())
-                        return false;
-
-                    // 如果被禁用，回傳否
-                    foreach (UserRole userRole in currentRole)
-                    {
-                        if (!userRole.IsGrant.HasValue)
-                            return false;
-                        else if (!userRole.IsGrant.Value)
-                            return false;
-                    }
-
-                    return true;
+                    bool isGrant = query.Any();
+                    return isGrant;
                 }
             }
             catch (Exception ex)
