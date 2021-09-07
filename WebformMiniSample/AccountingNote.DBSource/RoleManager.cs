@@ -149,6 +149,7 @@ namespace AccountingNote.DBSource
                         where
                             ((item.EndDate == null) ||
                              (item.EndDate.HasValue && item.EndDate.Value > DateTime.Now)) &&
+
                             ((item.IsGrant == null) ||
                              (item.IsGrant.Value))
                         select item;

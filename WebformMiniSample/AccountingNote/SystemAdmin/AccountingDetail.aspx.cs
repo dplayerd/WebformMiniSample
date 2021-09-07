@@ -35,11 +35,18 @@ namespace AccountingNote.SystemAdmin
             }
 
             // 檢查是否已授權
-            if (!AuthManager.IsGrant(currentUser.ID, new string[] { StaticText.RoleName_Announting_FinanceClerk }))
+            var roles =
+                new string[]
+                {
+                    StaticText.RoleName_Announting_FinanceClerk,
+                    StaticText.RoleName_Announting_FinanceAdmin,
+                };
+            if (!AuthManager.IsGrant(currentUser.ID, roles))
             {
                 Response.Redirect("UserInfo.aspx");
                 return;
             }
+
 
             if (!this.IsPostBack)
             {
