@@ -32,18 +32,15 @@ namespace AccountingNote.SystemAdmin
             }
 
             // 檢查是否已授權
-            var roles =
-                new string[]
-                {
-                    StaticText.RoleName_Announting_FinanceClerk,
-                    StaticText.RoleName_Announting_FinanceAdmin,
-                    StaticText.RoleName_Announting_FinanceReviewer,
-                };
-            if (!AuthManager.IsGrant(currentUser.ID, roles))
+            if (!this.CanRead())
             {
                 Response.Redirect("UserInfo.aspx");
                 return;
             }
+
+            if (!this.CanEdit())
+                this.btnCreate.Visible = false;
+
 
             // read accounting data
             var list = AccountingManager.GetAccountingList(currentUser.ID);
@@ -63,6 +60,43 @@ namespace AccountingNote.SystemAdmin
                 this.gvAccountingList.Visible = false;
                 this.plcNoData.Visible = true;
             }
+        }
+
+        private bool CanRead()
+        {
+            var currentUser = AuthManager.GetCurrentUser();
+
+            // 檢查是否已授權
+            var roles =
+                new string[]
+                {
+                    StaticText.RoleName_Announting_FinanceClerk,
+                    StaticText.RoleName_Announting_FinanceAdmin,
+                    StaticText.RoleName_Announting_FinanceReviewer,
+                };
+
+            if (AuthManager.IsGrant(currentUser.ID, roles))
+                return true;
+            else
+                return false;
+        }
+
+        private bool CanEdit()
+        {
+            var currentUser = AuthManager.GetCurrentUser();
+
+            // 檢查是否已授權
+            var roles =
+                new string[]
+                {
+                    StaticText.RoleName_Announting_FinanceClerk,
+                    StaticText.RoleName_Announting_FinanceAdmin,
+                };
+
+            if (AuthManager.IsGrant(currentUser.ID, roles))
+                return true;
+            else
+                return false;
         }
 
         private int GetCurrentPage()

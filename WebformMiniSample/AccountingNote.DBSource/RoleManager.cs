@@ -124,6 +124,36 @@ namespace AccountingNote.DBSource
             }
         }
 
+        public static void DeleteUserRole(Guid userID, Guid roleID)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var currentRole =
+                        (from item in context.UserRoles
+                         where
+                             item.UserInfoID == userID &&
+                             item.RoleID == roleID
+                         select item).ToList();
+
+
+                    if (currentRole.Any())
+                    {
+                        foreach (var dr in currentRole)
+                        {
+                            context.UserRoles.Remove(dr);
+                        }
+                    }
+
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+            }
+        }
 
         /// <summary> 是否被授權 </summary>
         /// <param name="userID"></param>
@@ -162,6 +192,32 @@ namespace AccountingNote.DBSource
             {
                 Logger.WriteLog(ex);
                 throw;
+            }
+        }
+
+        /// <summary> 讀取使用者現有的角色 </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public static List<Role> GetUserRoleList(Guid userID)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var currentRole =
+                        (from item in context.UserRoles
+                         join role in context.Roles on item.RoleID equals role.ID
+                         where
+                             item.UserInfoID == userID
+                         select role).ToList();
+
+                    return currentRole;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
             }
         }
     }

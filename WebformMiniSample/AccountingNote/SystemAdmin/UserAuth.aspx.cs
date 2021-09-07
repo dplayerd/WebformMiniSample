@@ -1,4 +1,5 @@
 ﻿using AccountingNote.DBSource;
+using AccountingNote.ORM.DBModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,11 @@ namespace AccountingNote.SystemAdmin
 
                 this.ckbRoleList.DataSource = RoleManager.GetRoleList();
                 this.ckbRoleList.DataBind();
+
+                // 讀取現有的角色
+                List<Role> list = RoleManager.GetUserRoleList(userID);
+                this.rptRoleList.DataSource = list;
+                this.rptRoleList.DataBind();
             }
         }
 
@@ -58,6 +64,36 @@ namespace AccountingNote.SystemAdmin
             Guid userID = Guid.Parse(userIDText);
 
             Auth.AuthManager.MapUserAndRole(userID, roleList);
+        }
+
+        protected void rptRoleList_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item ||
+                e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                string userIDText = Request.QueryString["ID"];
+
+                if (string.IsNullOrWhiteSpace(userIDText))
+                    return;
+
+                Guid userID = Guid.Parse(userIDText);
+                var mUser = UserInfoManager.GetUserInfo(userID);
+
+                if (mUser == null)                             // 如果帳號不存在，導至使用者管理
+                {
+                    Response.Redirect("UserList.aspx");
+                    return;
+                }
+
+                if (e.CommandName == "DeleteRole")
+                {
+                    string roleIDText = e.CommandArgument as string;
+                    Guid roleID = Guid.Parse(roleIDText);
+
+                    RoleManager.DeleteUserRole(userID, roleID);
+                    Response.Redirect(Request.RawUrl);
+                }
+            }
         }
     }
 }
