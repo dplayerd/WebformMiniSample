@@ -10,7 +10,7 @@ namespace AccountingNote.SystemAdmin
 {
     public partial class Admin : System.Web.UI.MasterPage
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             // 如果尚未登入，導至登入頁
             if (!AuthManager.IsLogined())                
