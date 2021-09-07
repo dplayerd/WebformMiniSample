@@ -13,5 +13,26 @@ namespace AccountingNote.Auth
         public string Name { get; set; }
         public string Email { get; set; }
         public string MobilePhone { get; set; }
+        public int UserLevel { get; set; }
+
+        #region Custom Property
+        public UserLevelEnum Level
+        {
+            get
+            {
+                return (UserLevelEnum)UserLevel;
+            }
+        }
+        #endregion
+    }
+
+    /// <summary> 使用者等級 </summary>
+    public enum UserLevelEnum
+    {
+        /// <summary> 管理者 </summary>
+        Admin = 0,
+
+        /// <summary> 一般使用者 </summary>
+        Regular = 1,
     }
 }

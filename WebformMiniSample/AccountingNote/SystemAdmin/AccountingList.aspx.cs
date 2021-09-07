@@ -31,16 +31,18 @@ namespace AccountingNote.SystemAdmin
                 return;
             }
 
-            // 檢查是否已授權
-            if (!this.CanRead())
+            if (currentUser.Level == UserLevelEnum.Regular)
             {
-                Response.Redirect("UserInfo.aspx");
-                return;
+                // 檢查是否已授權
+                if (!this.CanRead())
+                {
+                    Response.Redirect("UserInfo.aspx");
+                    return;
+                }
+
+                if (!this.CanEdit())
+                    this.btnCreate.Visible = false;
             }
-
-            if (!this.CanEdit())
-                this.btnCreate.Visible = false;
-
 
             // read accounting data
             var list = AccountingManager.GetAccountingList(currentUser.ID);
