@@ -153,6 +153,9 @@
     <Compile Include="SystemAdmin\Admin.Master.designer.cs">
       <DependentUpon>Admin.Master</DependentUpon>
     </Compile>
+    <Compile Include="SystemAdmin\AdminPageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="SystemAdmin\UserAuth.aspx.cs">
       <DependentUpon>UserAuth.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

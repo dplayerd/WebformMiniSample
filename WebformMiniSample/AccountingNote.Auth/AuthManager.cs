@@ -125,6 +125,9 @@ namespace AccountingNote.Auth
         /// <returns></returns>
         public static bool IsGrant(Guid userID, string[] roleNames)
         {
+            if (roleNames == null)
+                return true;
+
             List<Guid> roleIDs = new List<Guid>();
 
             foreach(string roleName in roleNames)

@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace AccountingNote.SystemAdmin
 {
-    public partial class UserAuth : System.Web.UI.Page
+    public partial class UserAuth : AdminPageBase
     {
 
         protected void Page_Load(object sender, EventArgs e)
