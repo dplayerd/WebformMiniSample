@@ -25,14 +25,4 @@ namespace AccountingNote.Auth
         }
         #endregion
     }
-
-    /// <summary> 使用者等級 </summary>
-    public enum UserLevelEnum
-    {
-        /// <summary> 管理者 </summary>
-        Admin = 0,
-
-        /// <summary> 一般使用者 </summary>
-        Regular = 1,
-    }
 }
