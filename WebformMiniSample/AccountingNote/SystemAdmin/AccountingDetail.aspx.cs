@@ -15,25 +15,16 @@ namespace AccountingNote.SystemAdmin
 {
     public partial class AccountingDetail : AdminPageBase
     {
+        public override string[] RequiredRoles { get; set; } =
+            new string[]
+            {
+                StaticText.RoleName_Announting_FinanceClerk,
+                StaticText.RoleName_Announting_FinanceAdmin,
+            };
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var currentUser = AuthManager.GetCurrentUser();
-            if (currentUser.Level == UserLevelEnum.Regular)
-            {
-                // 檢查是否已授權
-                var roles =
-                    new string[]
-                    {
-                    StaticText.RoleName_Announting_FinanceClerk,
-                    StaticText.RoleName_Announting_FinanceAdmin,
-                    };
-                if (!AuthManager.IsGrant(currentUser.ID, roles))
-                {
-                    Response.Redirect("UserInfo.aspx");
-                    return;
-                }
-            }
-
             if (!this.IsPostBack)
             {
                 // Check is create mode or edit mode
